@@ -6,6 +6,7 @@
     let comNumeros = $state(true)
     let comCaracteresEspeciais = $state(true)
     let senhasGeradas = $state([])
+    let dialogErrorOpened = $state(false)
     const caracteresEspeciais = ["!", "#", "$", "%", "&", "*", "+", "-", ".", "?", "@"]
     import copyImg from '$lib/assets/copy.png'
 
@@ -15,7 +16,7 @@
 
     function gerarSenha(){
         if(!comMaiusculas && !comMinusculas && !comNumeros && !comCaracteresEspeciais || qtdSenhas < 1 || tamanhoSenha < 4){
-            alert('Você precisa gerar no mínimo 1 senha de 4+ caracteres e selecionar no mínimo 1 categoria de caractere.')
+            dialogErrorOpened = true
             return
         }
         let password = ""
@@ -55,6 +56,13 @@
 
 <center><h1>GERADOR DE SENHAS</h1></center>
 
+<dialog open={dialogErrorOpened}>
+    <center>
+        <p>Você precisa gerar no mínimo 1 senha de 4 ou mais caracteres e selecionar no mínimo 1 categoria de caractere.</p>
+        <button id="closeBtn" onclick={() => dialogErrorOpened = false}>FECHAR</button>
+    </center>
+</dialog>
+
 <div class="box">
     {#if senhasGeradas.length > 0}
     <center><h3>Senhas:</h3></center>
@@ -64,7 +72,6 @@
         {/each}
     </div>
     {/if}
-    
     
     <center>
         <div id="selectsBox">
@@ -96,6 +103,58 @@ h3 {
     left: 50%;
     top: 5%;
     transform: translate(-50%, 0px);
+}
+@keyframes show {
+    0% {
+        transform: scale(0) translate(-50%, -50%);
+        left: 25%;
+    }
+    20% {
+        transform: scale(0.2) translate(-50%, -50%);
+        left: 30%;
+    }
+    40% {
+        transform: scale(0.4) translate(-50%, -50%);
+        left: 35%;
+    }
+    60% {
+        transform: scale(0.6) translate(-50%, -50%);
+        left: 40%;
+    }
+    80% {
+        transform: scale(0.8) translate(-50%, -50%);
+        left: 45%;
+    }
+    100% {
+        transform: scale(1) translate(-50%, -50%);
+        left: 50%;
+    }
+}
+#closeBtn {
+    color: black;
+    background-color: red;
+    width: 10rem;
+    height: 2rem;
+    margin-top: 8%;
+    font-size: 18px;
+}
+dialog {
+    border: 3px black solid;
+    border-radius: 8px;
+    width: 15rem;
+    height: 10rem;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    box-shadow: 0 0 8px black;
+    transition: 0.2s scale left;
+    animation-name: show;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
 }
 :global(body) {
     background: linear-gradient(90deg, rgba(12,3,163,1) 0%, rgba(4,4,193,1) 35%, rgba(0,212,255,1) 100%);
